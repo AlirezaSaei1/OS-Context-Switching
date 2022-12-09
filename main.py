@@ -4,17 +4,17 @@ from pprint import pprint
 
 def create_process(path, id):
     instructions = [line.rstrip() for line in open(path)]
-    p = Process(id, instructions)
-    pprint(vars(p))
+    return Process(id, instructions)
 
 
 def main():
+    processes = {}
     while True:
+        print(processes)
         try:
             signal = input().split()
             if signal[0] == "create_process":
-                create_process(signal[2], signal[1])
-
+                processes[signal[1]] = create_process(signal[2], signal[1])
             elif signal[0] == "run_process":
                 pass
             elif signal[0] == "block_process":
@@ -22,9 +22,9 @@ def main():
             elif signal[0] == "unblock_process":
                 pass
             elif signal[0] == "kill_process":
-                pass
+                processes.pop(signal[1])
             elif signal[0] == "show_context":
-                pass
+                processes[signal[1]].show_context()
             else:
                 raise Exception("Invalid Command")
         except Exception as e:
