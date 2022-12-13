@@ -17,7 +17,13 @@ class Process:
         print(f"Program Counter: {self.pc}\t\tState: {self.state}")
 
     def run(self):
-        self.pc = self.pc + 1
+        if self.pc + 1 == len(self.instruction):
+            self.pc = 0
+            self.registers["ir"] = None
+            self.registers["acc"] = None
+            self.registers["temp"] = None
+        else:
+            self.pc = self.pc + 1
         op, num = self.instructions[self.pc - 1].split()
         self.registers["ir"] = f"{op} {num}"
         self.registers["temp"] = num
@@ -34,3 +40,5 @@ class Process:
             self.registers["acc"] = self.registers["acc"] * num
         else:
             raise Exception("Invalid Operation")
+
+        self.state = process_states[0]
