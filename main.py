@@ -1,5 +1,4 @@
-from Process import Process
-from pprint import pprint
+from Process import Process, process_states
 
 
 def create_process(path, id):
@@ -9,24 +8,38 @@ def create_process(path, id):
 
 def main():
     processes = {}
+    loop = 0
     while True:
-        print(processes)
         try:
-            signal = input().split()
+            signal = input()
+            print(f"Loop: {loop}")
+            print(signal)
+            signal = signal.split()
             if signal[0] == "create_process":
                 processes[signal[1]] = create_process(signal[2], signal[1])
+
             elif signal[0] == "run_process":
-                pass
+                # make process ready after running is complete
+                if processes[signal[1]].state != process_states[2]:
+                    processes[signal[1]].run()
+                else:
+                    raise Exception("Process is Blocked")
+
             elif signal[0] == "block_process":
-                pass
+                processes[signal[1]].state = process_states[2]
+
             elif signal[0] == "unblock_process":
-                pass
+                processes[signal[1]].state = process_states[0]
+
             elif signal[0] == "kill_process":
                 processes.pop(signal[1])
+
             elif signal[0] == "show_context":
                 processes[signal[1]].show_context()
+
             else:
                 raise Exception("Invalid Command")
+            loop += 1
         except Exception as e:
             print(e)
 

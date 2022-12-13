@@ -15,3 +15,22 @@ class Process:
         print(
             f"Accumulator: {self.registers['acc']}\t\tTemp: {self.registers['temp']}")
         print(f"Program Counter: {self.pc}\t\tState: {self.state}")
+
+    def run(self):
+        self.pc = self.pc + 1
+        op, num = self.instructions[self.pc - 1].split()
+        self.registers["ir"] = f"{op} {num}"
+        self.registers["temp"] = num
+        self.state = process_states[1]
+
+        num = int(num)
+        if op == "load":
+            self.registers["acc"] = num
+        elif op == "sub":
+            self.registers["acc"] = self.registers["acc"] - num
+        elif op == "add":
+            self.registers["acc"] = self.registers["acc"] + num
+        elif op == "mul":
+            self.registers["acc"] = self.registers["acc"] * num
+        else:
+            raise Exception("Invalid Operation")
