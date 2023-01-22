@@ -17,7 +17,7 @@ class Process:
         print(f"Program Counter: {self.pc}\t\tState: {self.state}")
 
     def run(self):
-        if self.pc + 1 == len(self.instruction):
+        if self.pc + 1 == len(self.instructions):
             self.pc = 0
             self.registers["ir"] = None
             self.registers["acc"] = None
